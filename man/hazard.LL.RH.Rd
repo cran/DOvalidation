@@ -10,20 +10,20 @@ Local linear estimator of the unidimensional hazard (or hazard rate) with Ramlau
 \arguments{
   \item{xi}{Vector of time points where the counts data are given.
 }
-  \item{Oi}{Vector with the number (counts) of occurrences observed at each time point (xi). 
+  \item{Oi}{Vector with the number (counts) of occurrences observed at each time point (\code{xi}). 
 }
-  \item{Ei}{Vector with the observed exposure at each time point (xi).  
+  \item{Ei}{Vector with the observed exposure at each time point (\code{xi}).  
 }
   \item{x}{Vector (or scalar) with the (time) grid points where the hazard estimator will be evaluated.
 }  
   \item{b}{A positive scalar used as the bandwidth. 
 }
-  \item{K}{Indicates the kernel function to be considered in the estimator. Choose between values "epa" (for the epanechnikov kernel) or "sextic" (see details for its expression).
+  \item{K}{Indicates the kernel function to be considered in the estimator. Choose between values \code{"epa"} (for the Epanechnikov kernel) or \code{"sextic"} (see details for its expression).
 }
 }
 
 \details{The estimator is calculated assuming that the data are given as count data i.e. number of occurrences and exposures.
-The function allows to consider two different kernels using the argument "K". These are: epanechnikov, K(u)=.75*(1-u^2)*(abs(u)<1), and sextic K(u)=(3003/2048)*(1-(u)^2)^6)*(abs(u)<1).   
+The function allows to consider two different kernels using the argument \code{K}. These are: Epanechnikov, K(u)=.75*(1-u^2)*(abs(u)<1), and sextic K(u)=(3003/2048)*(1-(u)^2)^6)*(abs(u)<1).   
 }
 
 \value{
@@ -32,8 +32,7 @@ The function allows to consider two different kernels using the argument "K". Th
   \item{hLL }{Vector (or scalar) with the resulting hazard estimates at grid points x.}
 }
 \references{
-Gamiz, M.L., Mammen, E., Martinez-Miranda, M.D. and Nielsen, J.P.(2014). Do-Validating Local Linear Hazards. 
-Available at SSRN: http://dx.doi.org/10.2139/ssrn.2504497
+Gamiz, M.L., Mammen, E., Martinez-Miranda, M.D. and Nielsen, J.P.(2016). Double one-sided cross-validation of local linear hazards. Journal of the Royal Statistical Society B, 78, 755-779.
 
 Nielsen, J.P. and Tanggaard, C. (2001). Boundary and bias correction in kernel hazard estimation. Scandinavian Journal of Statistics,28, 675-698.
 }
@@ -50,7 +49,7 @@ Gamiz, M.L., Mammen, E., Martinez-Miranda, M.D. and Nielsen, J.P.
 \code{\link{hazard.LL}}
 }
 \examples{
-## This example was described by Gamiz et al. (2014) to analyse the exposure robustness of
+## This example was described by Gamiz et al. (2016) to analyse the exposure robustness of
 ## local linear hazards with natural weigthing and Ramlau-Hansen weighting
 data(Iceland)
 Ei<-Iceland$E

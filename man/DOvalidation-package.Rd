@@ -3,17 +3,17 @@
 \alias{DOvalidation}
 \docType{package}
 \title{
-Local Linear Hazard Estimation with Do-Validated and Cross-Validated Bandwidths
+Kernel Hazard Estimation with Best One-Sided and Double One-Sided Cross-Validation
 }
 \description{
-Local linear estimator for the univariate hazard (hazard rate) and bandwidth parameter selection using the do-validation method and the standard least squares cross-validation method.
+ Local linear hazard estimator and its multiplicatively bias correction, including three bandwidth selection methods: best one-sided cross-validation, double one-sided cross-validation, and standard cross-validation.
 }
 \details{
 \tabular{ll}{
 Package: \tab DOvalidation\cr
 Type: \tab Package\cr
-Version: \tab 0.1.0\cr
-Date: \tab 2014-11-09\cr
+Version: \tab 1.1.0\cr
+Date: \tab 2017-10-20\cr
 License: \tab GPL-2\cr
 }
 }
@@ -23,38 +23,29 @@ M.L. Gamiz, E. Mammen, M.D. Martinez-Miranda and J.P. Nielsen
 Maintainer: Maria Dolores Martinez-Miranda <mmiranda@ugr.es>
 }
 \references{
-Gamiz, M.L., Mammen, E., Martinez-Miranda, M.D. and Nielsen, J.P.(2014). Do-Validating Local Linear Hazards. Available at SSRN: http://dx.doi.org/10.2139/ssrn.2504497
+Gamiz, M.L., Mammen, E., Martinez-Miranda, M.D. and Nielsen, J.P.(2016). Double one-sided cross-validation of local linear hazards. Journal of the Royal Statistical Society B, 78, 755-779.
+
+Gamiz, M.L., Martinez-Miranda, M.D. and Nielsen, J.P. (2017). Multiplicative local linear hazard estimation and best one-sided cross-validation. Available 	 at http://arxiv.org/abs/1710.05575  
 
 Nielsen, J.P. and Tanggaard, C. (2001). Boundary and bias correction in kernel hazard estimation. Scandinavian Journal of Statistics,28, 675-698.
 }
 \keyword{ package }
 \keyword{ nonparametric }
+\keyword{survival}
 \examples{
-## Calculation of the local linear hazard estimator with do-validated bandwidth.
-## This example is described in Gamiz et al. (2014)
-data(UK)
-Oi<-UK$D
-Ei<-UK$E
+data(Iceland)
+Oi<-Iceland$D
+Ei<-Iceland$E
 ti<-40:110  # time is age and it goes from 40 to 110 years
-M<-length(ti)
-
-## First we estimate the bandwidth using do-validation
-## (mean of left- and right- onesided cross-validation)
-my.bs<-seq(1.5,40,length=100)
-## The left onesided cross-validated bandwidth
-res.left<-b.OSCV(grid.b=my.bs,K="sextic",Ktype="left",xi=ti,Oi=Oi,Ei=Ei)
-bleft<-res.left$boscv
-## The right onesided cross-validated bandwidth
-res.right<-b.OSCV(grid.b=my.bs,K="sextic",Ktype="right",xi=ti,Oi=Oi,Ei=Ei) 
-bright<-res.right$boscv
-## The do-validated bandwidth
-bdo<-(bleft+bright)/2
-
-## Now we calculate the local linear hazard with the do-validated bandwidth
-resLL.do<-hazard.LL(ti,Oi,Ei,x=ti,b=bdo,K="sextic",Ktype="symmetric")
-
-## The local linear hazard estimate is hLL.do below
-hLL.do<-resLL.do$hLL
-plot(ti,hLL.do,main="Local linear hazard estimator",xlab='age',ylab='',
-type='l',lwd=2)
+## Local linear hazard estimator 
+## and its multiplicatively bias corrected version (MBC)
+## with best one-sided cross-validated bandwidths
+## Note: use functions b.BO and b.BO.MBC to get these bandwidths
+##       (48.7 and 14.6, respectively)
+res.LL<-hazard.LL(xi=ti,Oi=Oi,Ei=Ei,x=ti,b=14.6)
+res.MBC<-hazard.MBC(xi=ti,Oi=Oi,Ei=Ei,x=ti,b=48.7)
+plot(ti,res.LL$hLL,main='Hazard estimates',xlab='age',ylab='',
+    type='l',col=4,lwd=2)
+lines(ti,res.MBC$hMBC,col=2,lwd=2)
+legend("topleft",bt="n",c("Local linear", "MBC"),col=c(4,2),lwd=2)
 }

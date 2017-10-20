@@ -21,8 +21,7 @@ The data were obtained from the Humam Mortality Database. Only ages from 40 to 1
 Human Mortality Database. University of California, Berkeley (USA), and Max Planck Institute for Demographic Research (Germany). Available at www.mortality.org or www.humanmortality.de
 }
 \references{
-Gamiz, M.L., Mammen, E., Martinez-Miranda, M.D. and Nielsen, J.P.(2014). Do-Validating Local Linear Hazards. 
-Available at SSRN: http://dx.doi.org/10.2139/ssrn.2504497
+Gamiz, M.L., Mammen, E., Martinez-Miranda, M.D. and Nielsen, J.P.(2016). Double one-sided cross-validation of local linear hazards. Journal of the Royal Statistical Society B, 78, 755-779.
 
 Spreeuw, J., Nielsen, J.P. and Jarner, S.F. (2013). A visual test of mixed hazard models, SORT, 37, 149-170.
 }

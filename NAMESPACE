@@ -1,1 +1,3 @@
 exportPattern("^[[:alpha:]]+")
+importFrom("stats", "integrate", "qnorm")
+importFrom("graphics", "hist")

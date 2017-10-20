@@ -2,6 +2,7 @@
 #  Functions to perform the calculations in the paper:
 #         Do-validating local linear hazards 
 #  by Gamiz, Mammen, Martinez-Miranda and Nielsen (2014)
+###### updated so a different weighting function can be used in cv and oscv
 ###################################################################################
 
 # Epanechnikov kernel
@@ -11,6 +12,7 @@ K.sextic<-function(u) { return(((3003/2048)*(1-(u)^2)^6)*(abs(u)<1))}
 
 
 ## Local linear hazard estimator from discrete data 
+
 hazard.LL<-function(xi,Oi,Ei,x,b,K="epa",Ktype="symmetric",CI=FALSE)
 {
   #we have discretized data:
@@ -90,26 +92,36 @@ hazard.LL<-function(xi,Oi,Ei,x,b,K="epa",Ktype="symmetric",CI=FALSE)
 ########################################################################
 ## The cross-validation bandwidth estimate
 
-b.CV<-function(grid.b,nb=50,K="epa",xi,Oi,Ei) 
+b.CV<-function(grid.b,nb,K="epa",xi,Oi,Ei,wei="exposure") 
 {
   M<-length(xi)
+  delta.M<-xi[2]-xi[1]
   if (missing(grid.b)){
     amp<-xi[M]-xi[1]
     b.min<-amp/(M+1)
     b.max<-amp/2
+    if (missing(nb)) nb<-50
     grid.b<-seq(b.min,b.max,length=nb)
-  } else {nb<-length(grid.b)}
+  }
+  nb<-length(grid.b)
+  ## in the first version we had
+  # if (missing(grid.b)){
+  #   amp<-xi[M]-xi[1]
+  #   b.min<-amp/(M+1)
+  #   b.max<-amp/2
+  #   grid.b<-seq(b.min,b.max,length=nb)
+  # } else {nb<-length(grid.b)}
   
   cv.score<-function(b)
   {
     alpha.i<-hazard.LL(xi,Oi,Ei,x=xi,b,K,Ktype="symmetric")$hLL
-    cv1<-sum((alpha.i^2)*Ei,na.rm=TRUE)
+    if (wei=="exposure") cv1<-sum((alpha.i^2)*Ei,na.rm=TRUE) else cv1<-sum((alpha.i^2)*delta.M,na.rm=TRUE)
     O.i<-matrix(Oi,M,M); 
     i0<-which(Oi==0)
 	  Oi0<-Oi-1; Oi0[i0]<-0
     diag(O.i)<-Oi0 ; 
     hi.xi<-sapply(1:M, function(i) {hazard.LL(xi,O.i[,i],Ei,x=xi[i],b,K,Ktype="symmetric")$hLL})
-    cv2<-sum(hi.xi*Oi,na.rm=TRUE)
+    if (wei=="exposure") cv2<-sum(hi.xi*Oi,na.rm=TRUE) else cv2<-sum(hi.xi*Oi*delta.M/Ei,na.rm=TRUE)
     cv<-(cv1-2*cv2)
     cv[cv==0]<-NA
     return(cv)  
@@ -125,29 +137,40 @@ b.CV<-function(grid.b,nb=50,K="epa",xi,Oi,Ei)
 
 ## The one-sided cross-validation bandwidth estimate
 
-b.OSCV<-function(grid.b,nb=50,K="epa",Ktype="left",xi,Oi,Ei) 
+b.OSCV<-function(grid.b,nb,K="epa",Ktype="left",xi,Oi,Ei,wei="exposure") 
 {
   # The rescaling constant for do-validation
-  if (K=="epa") {Cval<-0.5232}
+  if (K=="epa") {Cval<-0.5371}
   if (K=="sextic") {Cval<-0.5874 }
   M<-length(xi)
+  delta.M<-xi[2]-xi[1]
+  
   if (missing(grid.b)){
     amp<-xi[M]-xi[1]
     b.min<-amp/(M+1)
-    b.max<-amp
+    b.max<-amp/2
+    if (missing(nb)) nb<-50
     grid.b<-seq(b.min,b.max,length=nb)
-  } 
+  }
+  nb<-length(grid.b)
+  ## in the first version we had (but in the arguments by default nb=50)
+  # if (missing(grid.b)){
+  #   amp<-xi[M]-xi[1]
+  #   b.min<-amp/(M+1)
+  #   b.max<-amp
+  #   grid.b<-seq(b.min,b.max,length=nb)
+  # } 
    
   cv.score<-function(b)
   {
     alpha.i<-hazard.LL(xi,Oi,Ei,x=xi,b,K,Ktype)$hLL
-    cv1<-sum((alpha.i^2)*Ei,na.rm=TRUE)
+    if (wei=="exposure") cv1<-sum((alpha.i^2)*Ei,na.rm=TRUE) else cv1<-sum((alpha.i^2)*delta.M,na.rm=TRUE)
     O.i<-matrix(Oi,M,M);
     i0<-which(Oi==0)
     Oi0<-Oi-1; Oi0[i0]<-0
     diag(O.i)<-Oi0  
     hi.xi<-sapply(1:M, function(i) {hazard.LL(xi,O.i[,i],Ei,x=xi[i],b,K,Ktype)$hLL})
-    cv2<-sum(hi.xi*Oi,na.rm=TRUE)
+    if (wei=="exposure") cv2<-sum(hi.xi*Oi,na.rm=TRUE) else  cv2<-sum(hi.xi*Oi*delta.M/Ei,na.rm=TRUE)
     cv<-(cv1-2*cv2)
     cv[cv==0]<-NA
     return(cv)  

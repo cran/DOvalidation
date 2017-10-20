@@ -16,8 +16,7 @@ Human Mortality Database. University of California, Berkeley (USA), and Max Plan
 %%Statistics Iceland (http://www.statice.is/) 
 }
 \references{
-Gamiz, M.L., Mammen, E., Martinez-Miranda, M.D. and Nielsen, J.P.(2014). Do-Validating Local Linear Hazards. 
-Available at SSRN: http://dx.doi.org/10.2139/ssrn.2504497
+Gamiz, M.L., Mammen, E., Martinez-Miranda, M.D. and Nielsen, J.P.(2016). Double one-sided cross-validation of local linear hazards. Journal of the Royal Statistical Society B, 78, 755-779.
 
 Spreeuw, J., Nielsen, J. P. and Jarner, S. F. (2013). A visual test of mixed hazard models,
 SORT, 37, 149-??170.

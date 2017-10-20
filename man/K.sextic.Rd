@@ -11,10 +11,9 @@ K.sextic(u)
 A vector (or scalar) with the evaluation point(s). }
 }
 \value{
-The value of the kernel function at "u".}
+The value of the kernel function at \code{u}.}
 \references{
-Gamiz, M.L., Mammen, E., Martinez-Miranda, M.D. and Nielsen, J.P.(2014). Do-Validating Local Linear Hazards. 
-Available at SSRN: http://dx.doi.org/10.2139/ssrn.2504497
+Gamiz, M.L., Mammen, E., Martinez-Miranda, M.D. and Nielsen, J.P.(2016). Double one-sided cross-validation of local linear hazards. Journal of the Royal Statistical Society B, 78, 755-779.
 }
 \author{
 Gamiz, M.L., Mammen, E., Martinez-Miranda, M.D. and Nielsen, J.P.
